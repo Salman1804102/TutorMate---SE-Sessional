@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'second.dart';
+import 'second.dart'; // Import the second.dart file
 
 void main() {
   runApp(const MyApp());
@@ -41,7 +41,6 @@ class MyHomePage extends StatelessWidget {
                 color: Colors.white,
                 fontFamily: 'Sora',
                 fontWeight: FontWeight.bold
-
               ),
             ),
             SizedBox(height: 5),
@@ -79,7 +78,7 @@ class MyHomePage extends StatelessWidget {
                 // Handle button press
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NewPage()),
+                  MaterialPageRoute(builder: (context) => NewPage()), // Navigate to the NewPage() when the button is pressed
                 );
               },
               style: ButtonStyle(

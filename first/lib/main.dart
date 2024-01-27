@@ -1,9 +1,36 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'second.dart'; // Import the second.dart file
+import 'second.dart';
+import 'dart:io';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Platform.isAndroid? await Firebase.initializeApp(
+    options: FirebaseOptions(
+      apiKey:"AIzaSyBw976GzSIUzOgcTqa1jC1oUZfKzAsMULg",
+      appId: "1:905233028568:android:edcecf7e7844d78e46cead",
+      messagingSenderId:'905233028568',
+      projectId: "tutormate-20319",
+    ),
+  ):await Firebase.initializeApp();
 
-void main() {
+  /*if (kIsWeb) {
+    await Firebase.initializeApp(
+      options: FirebaseOptions(
+        apiKey: "AIzaSyC80CHz8zrJI5N1mlsJXCwkSkl1EISCGCo",
+        appId: "1:905233028568:web:34596daa5f09224046cead",
+        messagingSenderId:"905233028568",
+        projectId: "tutormate-20319",
+      ),
+    );
+  } else {
+    await Firebase.initializeApp();
+  }*/
+
   runApp(const MyApp());
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -18,6 +45,7 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(),
     );
+
   }
 }
 
@@ -38,9 +66,10 @@ class MyHomePage extends StatelessWidget {
               'TutorMate',
               style: TextStyle(
                 fontSize: 40,
-                color: Colors.white,
+                color: Colors.yellowAccent,
                 fontFamily: 'Sora',
                 fontWeight: FontWeight.bold
+
               ),
             ),
             SizedBox(height: 5),
@@ -78,7 +107,7 @@ class MyHomePage extends StatelessWidget {
                 // Handle button press
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NewPage()), // Navigate to the NewPage() when the button is pressed
+                  MaterialPageRoute(builder: (context) => NewPage()),
                 );
               },
               style: ButtonStyle(

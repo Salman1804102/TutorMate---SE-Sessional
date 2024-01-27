@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
+import 'signup_page.dart';
+import 'login_page.dart';
 class NewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -8,11 +8,32 @@ class NewPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('TutorMate'),
       ),
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: Colors.black54,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text(
+              'TutorMate',
+              style: TextStyle(
+                  fontSize: 40,
+                  color: Colors.yellowAccent,
+                  fontFamily: 'Sora',
+                  fontWeight: FontWeight.bold
+
+              ),
+            ),
+            SizedBox(height: 10), // Added gap between the image and the buttons
+            ClipOval(
+              child: Container(
+                width: 250,
+                height: 200,
+                child: Image.asset(
+                  'assets/images/logo.jpg', // Replace with the path to your oval-shaped image
+                ),
+              ),
+            ),
+            SizedBox(height: 50), // Added gap between the image and the buttons
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -21,22 +42,21 @@ class NewPage extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.red,
+                primary: Colors.redAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  'Sign Up',
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Colors.white,
-                    fontFamily: 'Sora',
-                    fontWeight: FontWeight.bold,
-                  ),
+              child: SizedBox(
+                width: 120,
+                height: 30,// Adjust the width as needed
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text('Sign Up', style: TextStyle(fontSize: 24, color: Colors.white70)),
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10), // Added gap between the buttons
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -46,17 +66,15 @@ class NewPage extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 primary: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  'Login',
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Colors.white,
-                    fontFamily: 'Sora',
-                    fontWeight: FontWeight.bold,
-                  ),
+              child: SizedBox(
+                width: 100, // Adjust the width as needed
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text('Login', style: TextStyle(fontSize: 24, color: Colors.white70)),
                 ),
               ),
             ),
@@ -67,208 +85,13 @@ class NewPage extends StatelessWidget {
   }
 }
 
-class SignUpPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Sign Up Page'),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          color: Colors.blueGrey,
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    hintText: 'Enter your email',
-                    labelStyle: TextStyle(color: Colors.yellowAccent),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 16),
-                TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    hintText: 'Enter your password',
-                    labelStyle: TextStyle(color: Colors.yellowAccent),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => RoleSelectionPage()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.green,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text('Sign Up', style: TextStyle(fontSize: 24, color: Colors.white)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
 
-class LoginPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Login Page'),
-      ),
-      body: Container(
-        color: Colors.blueGrey,
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    hintText: 'Enter your email',
-                    labelStyle: TextStyle(color: Colors.yellowAccent),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 16),
-                TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    hintText: 'Enter your password',
-                    labelStyle: TextStyle(color: Colors.yellowAccent),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => RoleSelectionPage()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.green,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text('Login', style: TextStyle(fontSize: 24, color: Colors.white)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
 
-class RoleSelectionPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Role Selection Page'),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Colors.purple, Colors.greenAccent],
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CreateClassPage()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text('Teacher', style: TextStyle(fontSize: 24, color: Colors.white)),
-                ),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  // Removed the reference to JoinClassPage
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => JoinClassPage()),
-                  // );
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text('Student', style: TextStyle(fontSize: 24, color: Colors.white)),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
 
-class CreateClassPage extends StatefulWidget {
-  @override
-  _CreateClassPageState createState() => _CreateClassPageState();
-}
 
-class _CreateClassPageState extends State<CreateClassPage> {
-  List<StudentInfo> students = [];
 
-  Future<void> _showDatePickerForStudent(BuildContext context, StudentInfo student) async {
-    int? selectedClasses = await Navigator.push<int?>(
-      context,
-      MaterialPageRoute(builder: (context) => DatePickerPage(student.numberOfClasses)),
-    );
 
-    if (selectedClasses != null) {
-      setState(() {
-        student.classesCount = selectedClasses;
-      });
-    }
-  }
 
-  Future<StudentInfo?> _showAddStudentDialog(BuildContext context) async {
-    String className = '';
-    String studentEmail = '';
-    int numberOfClasses = 1;
 
-    return await showDialog<StudentInfo>(
-      context: context,
+
+

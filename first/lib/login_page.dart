@@ -1,18 +1,23 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:first/signup_page.dart';
+import 'package:first/userauthen/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'utilis.dart';
 import 'roleSelection.dart';
 import 'signup_page.dart';
-
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
-
 class _LoginPageState extends State<LoginPage> {
   bool _isSigning = false;
+  final FirebaseAuthService _auth = FirebaseAuthService();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance; // Add this line
 
   @override
   void dispose() {
@@ -38,27 +43,30 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 Text(
                   "Login",
-                  style: TextStyle(
-                    fontSize: 40,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize:40,color:Colors.white, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: 30,
                 ),
-                // Email Field
+                FormContainerWidget(
+                  controller: _emailController,
+                  hintText: "Email",
+                  isPasswordField: false,
+                ),
                 SizedBox(
                   height: 10,
                 ),
-                // Password Field
+                FormContainerWidget(
+                  controller: _passwordController,
+                  hintText: "Password",
+                  isPasswordField: true,
+                ),
                 SizedBox(
                   height: 30,
                 ),
-                // Login Button
                 GestureDetector(
                   onTap: () {
-                    // Handle Login
+                    _signIn();
                   },
                   child: Container(
                     width: 210,
@@ -70,36 +78,57 @@ class _LoginPageState extends State<LoginPage> {
                     child: Center(
                       child: _isSigning
                           ? CircularProgressIndicator(
-                              color: Colors.white,
-                            )
+                        color: Colors.white,
+                      )
                           : Text(
-                              "Login",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                        "Login",
+                        style: TextStyle(
+                          color: Colors.white,fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ),
                 SizedBox(height: 10,),
-                // Sign in with Google Button
+                GestureDetector(
+                  onTap: () {
+                    _signInWithGoogle();
+                  },
+                  child: Container(
+                    width: 210,
+                    height: 45,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(width: 5,),
+                          Text(
+                            "Sign in with Google",
+                            style: TextStyle(
+                              color: Colors.white,fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
                 SizedBox(
                   height: 20,
                 ),
-                // Sign Up Text
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "Don't have an account?",
-                      style: TextStyle(
-                        color: Colors.yellow,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    Text("Don't have an account?", style: TextStyle(
+                      color: Colors.yellow,fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),),
                     SizedBox(
                       width: 5,
                     ),
@@ -109,12 +138,12 @@ class _LoginPageState extends State<LoginPage> {
                           context,
                           MaterialPageRoute(builder: (context) => SignUpPage()),
                         );
+                        ;
                       },
                       child: Text(
                         "Sign Up",
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
+                          color: Colors.white,fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -128,5 +157,58 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  void _signIn() async {
+    setState(() {
+      _isSigning = true;
+    });
+
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    User? user = await _auth.signInWithEmailAndPassword(email, password);
+
+    setState(() {
+      _isSigning = false;
+    });
+
+    if (user != null) {
+      showToast(message: "User is successfully signed in");
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => CreateClassPage()),
+      );
+    } else {
+      showToast(message: "Some error occurred");
+    }
+  }
+
+  void _signInWithGoogle() async {
+    final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+    try {
+      final GoogleSignInAccount? googleSignInAccount = await _googleSignIn
+          .signIn();
+
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          idToken: googleSignInAuthentication.idToken,
+          accessToken: googleSignInAuthentication.accessToken,
+        );
+
+        await _firebaseAuth.signInWithCredential(credential);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CreateClassPage()),
+        );
+      }
+    }
+    catch (e) {
+      showToast(message: "Some error occurred $e");
+    }
+
+  }
 }
-//////

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "905233028568",
+    "project_id": "tutormate-20319",
+    "storage_bucket": "tutormate-20319.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905233028568:android:edcecf7e7844d78e46cead",
+        "android_client_info": {
+          "package_name": "com.example.first"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBw976GzSIUzOgcTqa1jC1oUZfKzAsMULg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

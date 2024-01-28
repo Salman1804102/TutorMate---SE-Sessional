@@ -17,7 +17,7 @@ class _CreateClassPageState extends State<CreateClassPage> {
     // Load students from SharedPreferences when the widget is first created
     _loadStudentsFromSharedPreferences();
   }
-
+ // missing information fixed
   void _loadStudentsFromSharedPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? studentsData = prefs.getStringList('students');

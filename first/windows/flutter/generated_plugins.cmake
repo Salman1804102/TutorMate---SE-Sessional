@@ -1,7 +1,7 @@
 #
 # Generated file, do not edit.
 #
-
+//plugins generated for the deployment portion
 list(APPEND FLUTTER_PLUGIN_LIST
 )
 

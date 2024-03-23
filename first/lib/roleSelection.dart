@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class CreateClassPage extends StatefulWidget {
   @override
   _CreateClassPageState createState() => _CreateClassPageState();
@@ -73,12 +72,7 @@ class _CreateClassPageState extends State<CreateClassPage> {
                   },
                   decoration: InputDecoration(labelText: 'Student Name'),
                 ),
-                TextField(
-                  onChanged: (value) {
-                    studentEmail = value;
-                  },
-                  decoration: InputDecoration(labelText: 'Student Email'),
-                ),
+
                 TextField(
                   onChanged: (value) {
                     numberOfClasses = int.tryParse(value) ?? 1;
@@ -121,60 +115,6 @@ class _CreateClassPageState extends State<CreateClassPage> {
     );
   }
 
-  Future<void> _showPaymentTrackingDialog(StudentInfo student) async {
-    bool isPaymentDue = false;
-
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Payment of ${student.className}'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              RadioListTile<bool>(
-                title: const Text('Due'),
-                value: true,
-                groupValue: isPaymentDue,
-                onChanged: (bool? value) {
-                  setState(() {
-                    isPaymentDue = value ?? false;
-                  });
-                },
-              ),
-              RadioListTile<bool>(
-                title: const Text('Not Due'),
-                value: false,
-                groupValue: isPaymentDue,
-                onChanged: (bool? value) {
-                  setState(() {
-                    isPaymentDue = value ?? false;
-                  });
-                },
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Here you can update the payment due status for the student
-                // based on the value of isPaymentDue.
-                Navigator.of(context).pop();
-              },
-              child: Text('Ok'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void _deleteStudent(int index) {
     setState(() {
       students.removeAt(index);
@@ -182,6 +122,65 @@ class _CreateClassPageState extends State<CreateClassPage> {
 
     // Save students to SharedPreferences after deletion
     _saveStudentsToSharedPreferences();
+  }
+
+  Future<void> _showPaymentTrackingDialog(StudentInfo student) async {
+    bool isPaymentDue = student.isPaymentDue;
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text('Payment of ${student.className}'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  RadioListTile<bool>(
+                    title: const Text('Due'),
+                    value: true,
+                    groupValue: isPaymentDue,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isPaymentDue = value ?? false;
+                      });
+                    },
+                  ),
+                  RadioListTile<bool>(
+                    title: const Text('Not Due'),
+                    value: false,
+                    groupValue: isPaymentDue,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isPaymentDue = value ?? false;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    // Update payment due status for the student
+                    student.isPaymentDue = isPaymentDue;
+                    await _saveStudentsToSharedPreferences();
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Ok'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -256,6 +255,7 @@ class StudentInfo {
   final int numberOfClasses;
   int classesCount;
   List<DateTime?> selectedDates;
+  bool isPaymentDue;
 
   StudentInfo({
     required this.className,
@@ -263,12 +263,13 @@ class StudentInfo {
     required this.numberOfClasses,
     this.classesCount = 0,
     List<DateTime?>? selectedDates,
+    this.isPaymentDue = false,
   }) : this.selectedDates = selectedDates ?? List.generate(numberOfClasses, (index) => null);
 
   // Convert the student information to a string for SharedPreferences
   String toSharedPreferences() {
     String datesString = selectedDates.map((date) => date?.toIso8601String() ?? '').join(',');
-    return '$className|$studentEmail|$numberOfClasses|$classesCount|$datesString';
+    return '$className|$studentEmail|$numberOfClasses|$classesCount|$datesString|$isPaymentDue';
   }
 
   // Create a StudentInfo object from a string stored in SharedPreferences
@@ -284,6 +285,7 @@ class StudentInfo {
       numberOfClasses: int.parse(parts[2]),
       classesCount: int.parse(parts[3]),
       selectedDates: selectedDates,
+      isPaymentDue: parts[5] == 'true',
     );
   }
 }
